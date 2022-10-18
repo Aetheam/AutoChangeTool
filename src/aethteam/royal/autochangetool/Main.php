@@ -7,7 +7,6 @@ use pocketmine\event\Listener;
 
 use pocketmine\item\Tool;
 use pocketmine\plugin\PluginBase;
-use pocketmine\utils\Config;
 
 class Main extends PluginBase implements Listener {
 
@@ -29,9 +28,9 @@ class Main extends PluginBase implements Listener {
                             continue;
                         } else {
                             if ($items->getBlockToolType() === $type) {
-                                //change items slot
+
                                 $player->getInventory()->setItem($slot, $items);
-                                //delete items
+
                                 $player->getInventory()->setItem($slots, $item);
                                 $player->sendMessage($this->getConfig()->get("changeMessage"));
                                 return;
