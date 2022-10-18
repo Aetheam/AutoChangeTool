@@ -10,11 +10,10 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
 class Main extends PluginBase implements Listener {
-    private Config $config;
+
     protected function onEnable() : void {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
-        $this->saveConfig();
-        $this->config = $this->getConfig();
+        $this->saveDefaultConfig();
     }
     public function onBreakItem(BlockBreakEvent $event) {
         $player = $event->getPlayer();
@@ -23,10 +22,8 @@ class Main extends PluginBase implements Listener {
         $type = $item->getBlockToolType();
 
         if ($item instanceof Tool) {
-            $durability = $item->getDamage();
-            $maxDurability = $item->getMaxDurability();
             if ($player->getInventory()->contains($item)) {
-                if ($durability +1  >= $maxDurability) {
+                if ($item->getDamage() +1  >=  $item->getMaxDurability()) {
                     foreach ($player->getInventory()->getContents() as $slots => $items) {
                         if ($slot === $slots) {
                             continue;
@@ -36,7 +33,7 @@ class Main extends PluginBase implements Listener {
                                 $player->getInventory()->setItem($slot, $items);
                                 //delete items
                                 $player->getInventory()->setItem($slots, $item);
-                                $player->sendMessage($this->config->get("changeMessage"));
+                                $player->sendMessage($this->getConfig()->get("changeMessage"));
                                 return;
                             }
                         }
